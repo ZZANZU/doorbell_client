@@ -31,6 +31,7 @@ function ispressed(err, state) {
     if(state == 1 && mydata.time.getSeconds() != current_time.getSeconds()) {
 
         mydata.ispressed = 1;
+        mydata.time = new Date();
 
         var options = {
             uri:"http://13.59.174.162:7579/ispressed",
@@ -38,14 +39,10 @@ function ispressed(err, state) {
             form: mydata
         }
 
-        mydata.time = new Date();
-
         request(options, function(err, res, body) {
             if(err) {
                 console.log("error : " + err);
             }
-
-            // console.log(body);
         });
 
         console.log('pressed at ' + (new Date()));

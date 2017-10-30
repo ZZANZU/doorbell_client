@@ -18,11 +18,17 @@ var options = {
     form: mydata
 }
 
-mydata.ispressed = 0; // 0 - not pressed, 1 - pressed
+// 0 - not pressed, 1 - pressed
+mydata.ispressed = 0;
+
+console.log('client start!');
 
 function ispressed(err, state) {
+    var current_time = new Date();
 
-    if(state == 1 && mydata.time != (new Date())) { // when pressed
+    // send data at most one time per 1 minute.
+    // state == 1 : when pressed.
+    if(state == 1 && mydata.time.getSeconds() != current_time.getSeconds()) {
 
         mydata.ispressed = 1;
 
@@ -33,7 +39,7 @@ function ispressed(err, state) {
         }
 
         mydata.time = new Date();
-        
+
         request(options, function(err, res, body) {
             if(err) {
                 console.log("error : " + err);
@@ -52,9 +58,4 @@ function ispressed(err, state) {
 
 setInterval(function() {
     Button.watch(ispressed);
-}, 6000);
-
-
-// setInterval(function(){
-//   ispressed
-// }, 3000);
+}, 7000);
